@@ -82,7 +82,8 @@ function timeSpanToString(startDate, endDate) {
     let min = Math.trunc(delta / 60000 % 60).toString().padStart(2, '0');
     let sec = Math.trunc(delta / 1000 % 60).toString().padStart(2, '0');
     let ms = Math.trunc(delta % 1000).toString().padStart(3, '0');
-    return `${h}:${min}:${sec}.${ms}`;
+    //return `${h}:${min}:${sec}.${ms}`;
+    return h + ':' + min + ':' + sec + '.' + ms;
 }
 
 
