@@ -63,7 +63,13 @@ function parseBankAccount(bankAccount) {
  *                                                                                                'characters.'
  */
 function* wrapText(text, columns) {
-    throw new Error('Not implemented');
+    let words = text.split(' ');
+    while (words.length > 0) {
+        let line = words.shift();
+        while ((words.length > 0) && (line.length + words[0].length < columns))
+            line += ' ' + words.shift();
+        yield line;
+    }
 }
 
 
@@ -110,10 +116,10 @@ function getPokerHandRank(hand) {
  * The task is to break the figure in the rectangles it is made of.
  *
  * NOTE: The order of rectanles does not matter.
- * 
+ *
  * @param {string} figure
  * @return {Iterable.<string>} decomposition to basic parts
- * 
+ *
  * @example
  *
  *    '+------------+\n'+
