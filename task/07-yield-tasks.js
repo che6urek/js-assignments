@@ -33,7 +33,16 @@
  *
  */
 function* get99BottlesOfBeer() {
-    throw new Error('Not implemented');
+    for (let amount = 99; amount > 2; amount--) {
+        yield `${amount} bottles of beer on the wall, ${amount} bottles of beer.`;
+        yield `Take one down and pass it around, ${amount - 1} bottles of beer on the wall.`;
+    }
+    yield '2 bottles of beer on the wall, 2 bottles of beer.';
+    yield 'Take one down and pass it around, 1 bottle of beer on the wall.';
+    yield '1 bottle of beer on the wall, 1 bottle of beer.';
+    yield 'Take one down and pass it around, no more bottles of beer on the wall.';
+    yield 'No more bottles of beer on the wall, no more bottles of beer.';
+    yield 'Go to the store and buy some more, 99 bottles of beer on the wall.';
 }
 
 
@@ -47,7 +56,15 @@ function* get99BottlesOfBeer() {
  *
  */
 function* getFibonacciSequence() {
-    throw new Error('Not implemented');
+    let prev = 0, curr = 1, temp;
+    yield 0;
+    yield 1;
+    while (true) {
+        temp = prev + curr;
+        prev = curr;
+        curr = temp;
+        yield curr;
+    }
 }
 
 
@@ -82,7 +99,13 @@ function* getFibonacciSequence() {
  *
  */
 function* depthTraversalTree(root) {
-    throw new Error('Not implemented');
+    let res = [root];
+    for (let i = 0; i < res.length; i++) {
+        yield res[i];
+        if ('children' in res[i])
+            for (let j = 0; j < res[i].children.length; j++)
+                res.splice(i + 1 + j, 0, res[i].children[j]);
+    }
 }
 
 
@@ -108,7 +131,13 @@ function* depthTraversalTree(root) {
  *
  */
 function* breadthTraversalTree(root) {
-    throw new Error('Not implemented');
+    let res = [root];
+    for (let i = 0; i < res.length; i++) {
+        yield res[i];
+        if ('children' in res[i])
+            for (let j = 0; j < res[i].children.length; j++)
+                res.push(res[i].children[j]);
+    }
 }
 
 
@@ -126,8 +155,30 @@ function* breadthTraversalTree(root) {
  *   [ 1, 3, 5, ... ], [ -1 ] => [ -1, 1, 3, 5, ...]
  */
 function* mergeSortedSequences(source1, source2) {
-    throw new Error('Not implemented');
-}
+    let src1, src2;
+    src1 = source1();
+    src2 = source2();
+    let num1, num2;
+    num1 = src1.next().value;
+    num2 = src2.next().value;
+    while ((num1 != undefined) && (num2 != undefined)) {
+        if (num1 < num2) {
+            yield num1;
+            num1 = src1.next().value;
+        } else {
+            yield num2;
+            num2 = src2.next().value;
+        }
+    }
+    while (num1 != undefined) {
+        yield num1;
+        num1 = src1.next().value;
+    }
+    while (num2 != undefined) {
+        yield num2;
+        num2 = src2.next().value;
+    }
+ }
 
 
 module.exports = {
