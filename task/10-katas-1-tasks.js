@@ -17,8 +17,47 @@
  *  ]
  */
 function createCompassPoints() {
-    throw new Error('Not implemented');
-    var sides = ['N','E','S','W'];  // use array of cardinal directions only!
+    let sides = ['N','E','S','W'];  // use array of cardinal directions only!
+
+    let res = new Array();
+    let curSide, nextSide, midSide, abb;
+    for (let side = 0; side < sides.length; side++) {
+        curSide = sides[side];
+        nextSide = sides[(side + 1) % sides.length];
+        midSide = (side % 2 == 0) ? curSide + nextSide : nextSide + curSide;
+        for (let point = 0; point < 8; point++) {
+            switch (point) {
+                case 0:
+                    abb = curSide;
+                    break;
+                case 1:
+                    abb = curSide + 'b' + nextSide;
+                    break;
+                case 2:
+                    abb = curSide + midSide;
+                    break;
+                case 3:
+                    abb = midSide + 'b' + curSide;
+                    break;
+                case 4:
+                    abb = midSide;
+                    break;
+                case 5:
+                    abb = midSide + 'b' + nextSide;
+                    break;
+                case 6:
+                    abb = nextSide + midSide;
+                    break;
+                case 7:
+                    abb = nextSide + 'b' + curSide;
+                    break;
+                default:
+                    break;
+            }
+            res.push({abbreviation: abb, azimuth: (side * 8 + point) * 11.25});
+        }
+    }
+    return res;
 }
 
 
@@ -88,7 +127,30 @@ function* expandBraces(str) {
  *
  */
 function getZigZagMatrix(n) {
-    throw new Error('Not implemented');
+    let res = new Array(n);
+    for (let i = 0; i < n; i++)
+        res[i] = new Array(n);
+    let elAmount = n * n;
+    let i = 0, j = 0;
+    for (let value = 0; value < elAmount; value++) {
+        res[i][j] = value;
+        if (((i + j) & 1) == 0) {
+            if (j + 1 < n)
+                j++;
+            else
+                i += 2;
+            if (i > 0)
+                i--;
+        } else {
+            if (i + 1 < n)
+                i++;
+            else
+                j += 2;
+            if (j > 0)
+                j--;
+        }
+    }
+    return res;
 }
 
 
@@ -113,7 +175,25 @@ function getZigZagMatrix(n) {
  *
  */
 function canDominoesMakeRow(dominoes) {
-    throw new Error('Not implemented');
+    let values = new Array(7).fill(0);
+    let doubles = new Array(7).fill(false);
+    for (let domino of dominoes) {
+        for (let value of domino)
+            values[value] = values[value] + 1;
+        if (domino[0] == domino[1])
+            doubles[domino[0]] = true;
+    }
+    for (let i = 0; i < doubles.length; i++)
+        if ((values[i] == 2) && doubles[i])
+            return false
+    let odd = 0;
+    for (let value of values)
+        odd += value % 2;
+    if ((odd == 0) || (odd == 2)) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 
@@ -137,7 +217,25 @@ function canDominoesMakeRow(dominoes) {
  * [ 1, 2, 4, 5]          => '1,2,4,5'
  */
 function extractRanges(nums) {
-    throw new Error('Not implemented');
+    let isSkipping = false;
+    let res = new String();
+    for(let i = 0; i < nums.length; i++) {
+        if(i == nums.length - 1)
+            res += nums[i].toString();
+        else {
+            if(((nums[i] == nums[i + 1] - 1) && (nums[i + 1] == nums[i + 2] - 1))
+                || ((nums[i] == nums[i + 1] - 1) && isSkipping)) {
+                if(!isSkipping)
+                    res += nums[i].toString() + '-';
+                isSkipping = true;
+            }
+            else {
+                res += nums[i].toString() + ',';
+                isSkipping = false;
+            }
+        }
+    }
+    return res;
 }
 
 module.exports = {
