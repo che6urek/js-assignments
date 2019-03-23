@@ -10,13 +10,13 @@
  * @return {bool}
  *
  * @example
- *   var puzzle = [ 
+ *   var puzzle = [
  *      'ANGULAR',
  *      'REDNCAE',
  *      'RFIDTCL',
  *      'AGNEGSA',
  *      'YTIRTSP',
- *   ]; 
+ *   ];
  *   'ANGULAR'   => true   (first row)
  *   'REACT'     => true   (starting from the top-right R adn follow the ↓ ← ← ↓ )
  *   'UNDEFINED' => true
@@ -25,7 +25,7 @@
  *   'CLASS'     => true
  *   'ARRAY'     => true   (first column)
  *   'FUNCTION'  => false
- *   'NULL'      => false 
+ *   'NULL'      => false
  */
 function findStringInSnakingPuzzle(puzzle, searchStr) {
     throw new Error('Not implemented');
@@ -36,7 +36,7 @@ function findStringInSnakingPuzzle(puzzle, searchStr) {
  * Returns all permutations of the specified string.
  * Assume all chars in the specified string are different.
  * The order of permutations does not matter.
- * 
+ *
  * @param {string} chars
  * @return {Iterable.<string>} all posible strings constructed with the chars from the specfied string
  *
@@ -45,7 +45,28 @@ function findStringInSnakingPuzzle(puzzle, searchStr) {
  *    'abc' => 'abc','acb','bac','bca','cab','cba'
  */
 function* getPermutations(chars) {
-    throw new Error('Not implemented');
+
+    function *HeapsAlgorithm(sequence, length) {
+        if (length == 1)
+            yield sequence.join('');
+        else {
+            let temp;
+            for (let i = 0; i < length; i++) {
+                yield *HeapsAlgorithm(sequence, length - 1);
+                if (length % 2 == 0) {
+                    temp = sequence[i];
+                    sequence[i] = sequence[length - 1];
+                    sequence[length - 1] = temp;
+                } else {
+                    temp = sequence[0];
+                    sequence[0] = sequence[length - 1];
+                    sequence[length - 1] = temp;
+                }
+            }
+        }
+    }
+
+    yield *HeapsAlgorithm(chars.split(''), chars.length);
 }
 
 
@@ -53,9 +74,9 @@ function* getPermutations(chars) {
  * Returns the most profit from stock quotes.
  * Stock quotes are stores in an array in order of date.
  * The stock profit is the difference in prices in buying and selling stock.
- * Each day, you can either buy one unit of stock, sell any number of stock units you have already bought, or do nothing. 
+ * Each day, you can either buy one unit of stock, sell any number of stock units you have already bought, or do nothing.
  * Therefore, the most profit is the maximum difference of all pairs in a sequence of stock prices.
- * 
+ *
  * @param {array} quotes
  * @return {number} max profit
  *
@@ -65,7 +86,11 @@ function* getPermutations(chars) {
  *    [ 1, 6, 5, 10, 8, 7 ] => 18  (buy at 1,6,5 and sell all at 10)
  */
 function getMostProfitFromStockQuotes(quotes) {
-    throw new Error('Not implemented');
+    let sum = 0;
+    quotes.forEach((value, index) => {
+        sum += quotes.slice(index).sort((a, b) => b - a)[0] - value;
+    });
+    return sum;
 }
 
 
@@ -73,15 +98,15 @@ function getMostProfitFromStockQuotes(quotes) {
  * Class representing the url shorting helper.
  * Feel free to implement any algorithm, but do not store link in the key\value stores.
  * The short link can be at least 1.5 times shorter than the original url.
- * 
+ *
  * @class
  *
  * @example
- *    
+ *
  *     var urlShortener = new UrlShortener();
  *     var shortLink = urlShortener.encode('https://en.wikipedia.org/wiki/URL_shortening');
  *     var original  = urlShortener.decode(shortLink); // => 'https://en.wikipedia.org/wiki/URL_shortening'
- * 
+ *
  */
 function UrlShortener() {
     this.urlAllowedChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"+
@@ -94,10 +119,10 @@ UrlShortener.prototype = {
     encode: function(url) {
         throw new Error('Not implemented');
     },
-    
+
     decode: function(code) {
         throw new Error('Not implemented');
-    } 
+    }
 }
 
 
