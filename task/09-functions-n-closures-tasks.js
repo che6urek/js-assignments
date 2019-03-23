@@ -26,7 +26,7 @@
  *
  */
 function getComposition(f,g) {
-    throw new Error('Not implemented');
+    return x => f(g(x));
 }
 
 
@@ -47,7 +47,7 @@ function getComposition(f,g) {
  *
  */
 function getPowerFunction(exponent) {
-    throw new Error('Not implemented');
+    return x => Math.pow(x, exponent);
 }
 
 
@@ -65,7 +65,14 @@ function getPowerFunction(exponent) {
  *   getPolynom()      => null
  */
 function getPolynom() {
-    throw new Error('Not implemented');
+    if (arguments.length == 0)
+        return null;
+    return x => {
+        let res = 0;
+            for (let i = 0; i < arguments.length; i++)
+                res += arguments[i] * Math.pow(x, arguments.length - i - 1);
+        return res;
+    };
 }
 
 
@@ -84,7 +91,8 @@ function getPolynom() {
  *   memoizer() => the same random number  (next run, returns the previous cached result)
  */
 function memoize(func) {
-    throw new Error('Not implemented');
+    let res = func();
+    return () => res;
 }
 
 
@@ -104,7 +112,17 @@ function memoize(func) {
  * retryer() => 2
  */
 function retry(func, attempts) {
-    throw new Error('Not implemented');
+    return () => {
+        let attempt = 1, exception;
+        do {
+            exception = false;
+            try {
+                return func();
+            } catch (error) {
+                exception = true;
+            }
+        } while (exception && (attempt++ <= attempts));
+    };
 }
 
 
@@ -132,7 +150,12 @@ function retry(func, attempts) {
  *
  */
 function logger(func, logFunc) {
-    throw new Error('Not implemented');
+    return function() {
+        logFunc(`${func.name}(${JSON.stringify(Array.from(arguments)).slice(1, -1)}) starts`);
+        let res = func.apply(null, arguments);
+        logFunc(`${func.name}(${JSON.stringify(Array.from(arguments)).slice(1, -1)}) ends`);
+        return res;
+    }
 }
 
 
@@ -171,7 +194,7 @@ function partialUsingArguments(fn) {
  *   getId10() => 11
  */
 function getIdGeneratorFunction(startFrom) {
-    throw new Error('Not implemented');
+    return () => startFrom++;
 }
 
 
