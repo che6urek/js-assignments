@@ -85,7 +85,8 @@ function getArrayOfPositives(arr) {
  *    [ 'cat, 'dog', 'raccon' ] => [ 'cat', 'dog', 'racoon' ]
  */
 function getArrayOfStrings(arr) {
-    return arr.filter(el => (typeof (el) == 'string') || (el instanceof String));
+    let isString = require("./01-strings-tasks").isString;
+    return arr.filter(el => isString(el));
 }
 
 /**
