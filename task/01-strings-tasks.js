@@ -224,14 +224,15 @@ function getRectangleString(width, height) {
  *
  */
 function encodeToRot13(str) {
+    const shift = 13;
     let res = '', code, newCode;
     for (let i = 0; i < str.length; i++) {
         code = str.charCodeAt(i);
         if (((code > 64) && (code < 91)) || ((code > 96) && (code < 123))) 	{
             if (code < 91) {
-                newCode = 65 + ((code - 65 + 13) % 26);
+                newCode = 65 + ((code - 65 + shift) % 26);
             } else {
-                newCode = 97 + ((code - 97 + 13) % 26);
+                newCode = 97 + ((code - 97 + shift) % 26);
             }
             res += String.fromCharCode(newCode);
         } else {
