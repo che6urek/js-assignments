@@ -202,48 +202,47 @@ function roundToPowerOfTen(num, pow) {
  *   17 => true
  */
 
- /**
-function powByMod(a, b, m) {
-    if(b == 0)
+function powByMod(a, b, mod) {
+    let temp;
+    if (b == 0) {
         return 1;
-    if(b % 2 == 0) {
-        let temp = powByMod(a, b / 2, m);
-        return temp * temp % m;
     }
-    return (powByMod(a, b - 1, m) * a) % m;
+    if (b & 1 == 0) {
+        temp = powByMod(a, b >> 1, mod);
+          return temp * temp % mod;
+    }
+    return powByMod(a, b - 1, mod) * a % mod;
 }
 
 function gcd(a, b) {
-    if(a == 0)
-        return b;
-    else
-        return gcd(b, a % b);
+    if (!b) {
+        return a;
+    }
+    return gcd(b, a % b);
 }
 
-function IsPrime(n) {
+function randomInt(min, max) {
+    let rand = min - 0.5 + Math.random() * (max - min + 1)
+    return Math.round(rand);
+}
+
+function isPrime(n) {
     if(n == 2)
         return true;
     else {
-        for(let i = 0; i < 100; i++) {
-            let a = 2 + Math.random() * (n - 2);
-            if(gcd(a, n) != 1)
+        for(let i = 0; i < 30; i++) {
+            let a = randomInt(2, n - 2)
+            if(gcd(a, n) != 1) {
                 return false;
-            if(powByMod(a, n - 1, n) != 1)
+            }
+            if(powByMod(a, n - 1, n) != 1) {
                 return false;
+            }
         }
         return true;
     }
-*/
-
-function isPrime(n) {
-    if(n == 1)
-      return false;
-    else
-        for (let i = 2; i <= Math.sqrt(n); i++)
-            if (n % i == 0)
-                return false;
-    return true;
 }
+
 
 
 /**
